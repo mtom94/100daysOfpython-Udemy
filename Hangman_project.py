@@ -1,40 +1,66 @@
-# Step 1
+#Step 5
 
-word_list = ["ardvark", "baboon", "camel"]
-
-#Randomly choose a word from the word_list and assign it to a variable called chosen_word.
 import random
+
+#todo 1 - Update the wordlist to use the 'word_list' from hangman_words.py
+
+#Delete this line: word_list = ["advark", "baboon", "camel"]
+
+from hangman_words import word_list
+
 chosen_word = random.choice(word_list)
 word_length = len(chosen_word)
-print(chosen_word)
-#TODO 1 - Ask the user to guess a letter and assign their answer to a variable called guess. Make guess lowercase.
-#Create an empty list called display.
+end_of_game = False
+lives = 6
+
+#todo 3 - Import the logo from hangman_art.py and print it at the start of the game.
+
+from hangman_art import logo
+print(logo)
+
+#Testing code
+#Print(f' Pssst, the solution is {chosen_word}.')
+
+#Create blanks
 
 display = []
-for _ in range(word_length):
-    display += "-"
-print(display)
+for _ in range(word_length) :
+    display += "_"
 
-#or we can use the below code
+while not end_of_game:
+    guess = input("Guess a letter :").lower()
 
-# display = []
-# for letter in chosen_word:
-#     display += "-"
-# print(display)
+    #todo 4 - If the user has entered a letter they've already guessed, print the letter and let them know.
+    if guess in display:
+        print(f"You've already guessed {guess}")
 
-#for each letter in the chosen_word, add a "_" to "display".
-#So if the chosen_word was "apple" , display should be ["_", "_", "_", "_", "_"] with 5 "_" representing each letter to guess.
-guess = input("Guess a letter:")
-#TODO 2 - Check if the letter the user guessed (guess) is one of the letters in the chosen_word.
-#if the letter at that position matches 'guess' then reveal that letter in the display at that position.
-#eg: If the user guessed "p" and the chosen_word was "apple" , then display should be ["_", "p", "p", "_", "_"].
-for position in range(word_length):
-    letter = chosen_word[position]
-    if letter == guess:
-        display[position] = letter
+        #Check guessed letter
+    for position in range(word_length):
+        letter = chosen_word[position]
+#print(f"Current position : {position} \n Current letter: {letter} \n Guessed letter:{guess}")
+        if letter == guess:
+            display[position]   = letter
 
-#TODO 3 - Print 'display' and you should see the guessed letter in the correct position and every other letter replace with "_".
-print(display)
-#Hint - Don't worry about getting the user to guess the next letter. We'll tackle that in step 3.
+#check if user is wrong.
+    if guess not in chosen_word:
+        #todo 5 - If the letter not in the chosen_word, print out the letter and let them know it's not in the word.
+        print(f"You guessed {guess}, that's not in the word. You lose a life.")
+
+        lives -=1
+        if lives == 0 :
+            end_of_game = True
+            print("You lose.")
+
+                        #Join all the elements in the list and turn it into a String
+            print(f"{''.join(display)}")
+
+#check if user has got all letters.
+        if "_" not in display:
+            end_of_game = True
+            print("You win.")
+
+                #todo 2 - Import the stages from hangman_art.py and make this error go away.
+        from hangman_art import stages
+        print(stages[lives])
 
 
